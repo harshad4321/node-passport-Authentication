@@ -1,15 +1,13 @@
 const express = require('express')
 const router = express.Router()
 const bcrypt = require('bcryptjs')
-
+const passport =require('passport')
 //User model
+   
+const User = require('../models/User');     
  
-const User = require('../models/User');
-
-
-//Login page
-
-router.get('/login',(req,res)=>res.render('login'))
+// Login Page
+router.get('/login', (req, res) => res.render('login'));
 
 
 //Resgister page
@@ -64,8 +62,6 @@ router.post('/register', (req, res) => {
             password
 
           });
-     
-     res.send('hello');
 //Hash passsword
           bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(newUser.password, salt, (err, hash) => {
@@ -79,15 +75,32 @@ router.post('/register', (req, res) => {
                     'success_msg',
                     'You are now registered and can log in'
                   );
-                  console.log(newUser)
-                  res.redirect('/users/login');
+                  
+                  res.redirect('/users/login');   
                 })
-                .catch(err => console.log(err));
-            });
+                .catch(err => console.log(err)); 
+            }); 
           }); 
-        }
+        } 
       });
     }
   });
-  module.exports = router;
+  
+// Login
+router.post('/login', (req, res, next) => {
+  passport.authenticate('local', {
+    successRedirect: '/dashboard',
+    failureRedirect: '/users/login',
+    failureFlash: true
+  })(req, res, next);
+});
+
+// Logout
+router.get('/logout', (req, res) => {
+  req.logout();
+  req.flash('success_msg', 'You are logged out');
+  res.redirect('/users/login');
+});
+
+module.exports = router;
 
