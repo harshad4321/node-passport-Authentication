@@ -7,7 +7,7 @@ Node.js,
   Mongoose, 
   EJS 
 
-### Version: 2.0.0
+
 
 ### Usage
 
