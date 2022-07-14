@@ -7,6 +7,6 @@ This is a user login and registration app using
 -  Mongoose, 
 -  EJS 
 
-
+- status not completed
 
 
